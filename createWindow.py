@@ -6,16 +6,20 @@ from tkinter import Label
 
 import launchGame
 
-def createWindow(logins, account_data):
+CARD_BACKGROUND = "black"
+TEXT_COLOR = "white"
+APP_BACKGROUND = "gray"
+
+def createWindow(logins, login_data):
     root = tk.Tk()
     root.title("Basic Tkinter Window")
-    root.configure(bg="gray")
+    root.configure(bg=APP_BACKGROUND)
 
     # Start in maximized mode
     root.state('zoomed')
 
     # Create a frame to center the player cards
-    container = tk.Frame(root, bg="gray")
+    container = tk.Frame(root, bg=APP_BACKGROUND)
     container.pack(expand=True)  # Expands to center in the window
 
     # Get screen width and calculate how many cards fit per row
@@ -23,16 +27,17 @@ def createWindow(logins, account_data):
     card_width = 320  # Card width + padding
     cards_per_row = max(1, screen_width // card_width)
 
-    for i, (login, account) in enumerate(zip(logins, account_data)):
-        createPlayerButton(container, login, account, i, cards_per_row)
+    for i, (login, data) in enumerate(zip(logins, login_data)):
+        createPlayerButton(container, login, data, i, cards_per_row, True)
+        
 
     root.mainloop()
 
-def createPlayerButton(parent, login, account, index, cards_per_row):
+def createPlayerButton(parent, login, account, index, cards_per_row, allowLogin):
     if account is None:
         return
 
-    player_card = tk.Frame(parent, width=300, height=500, bg="Black", cursor="hand2")
+    player_card = tk.Frame(parent, width=300, height=500, bg=CARD_BACKGROUND, cursor="hand2" if allowLogin else "hand1")
     player_card.pack_propagate(False)
 
     row = index // cards_per_row
@@ -43,46 +48,45 @@ def createPlayerButton(parent, login, account, index, cards_per_row):
 
     player_card.grid(row=row, column=col, padx=10, pady=10, sticky="n")
 
-    bindClickEvent(player_card, login)
+    bindClickEvent(allowLogin, player_card, login)
 
     ##################### Player Avatar #######################
     player_avatar_image = fetch_image(account['avatar'], 100)  
-    player_avatar_label = Label(player_card, image=player_avatar_image, bg="Black")
+    player_avatar_label = Label(player_card, image=player_avatar_image, bg=CARD_BACKGROUND)
     player_avatar_label.pack(pady=20)
     player_avatar_label.image = player_avatar_image
-    bindClickEvent(player_avatar_label, login)
+    bindClickEvent(allowLogin, player_avatar_label, login)
 
     ##################### Username #######################
-    player_username = Label(player_card, text=account['username'], font=("Arial", 16), bg="Black", fg="white")
+    player_username = Label(player_card, text=account['username'], font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
     player_username.pack(pady=10)
-    bindClickEvent(player_username, login)
+    bindClickEvent(allowLogin, player_username, login)
     
     ####################### Role Icons ##########################
     tank_icon =    ImageTk.PhotoImage(Image.open("images/Tank.png")   .resize((50, 50)))
     damage_icon =  ImageTk.PhotoImage(Image.open("images/Damage.png") .resize((50, 50)))
     support_icon = ImageTk.PhotoImage(Image.open("images/Support.png").resize((50, 50)))
 
-    icons = tk.Frame(player_card, bg="Black")
+    icons = tk.Frame(player_card, bg=CARD_BACKGROUND)
     icons.pack(pady=10)
 
-    # Place the small images side by side
-    tank_icon_label = Label(icons, image=tank_icon, bg="Black")
+    tank_icon_label = Label(icons, image=tank_icon, bg=CARD_BACKGROUND)
     tank_icon_label.pack(side="left", padx=10)
     tank_icon_label.image = tank_icon
 
-    damage_icon_label = Label(icons, image=damage_icon, bg="Black")
+    damage_icon_label = Label(icons, image=damage_icon, bg=CARD_BACKGROUND)
     damage_icon_label.pack(side="left", padx=10)
     damage_icon_label.image = damage_icon
     
-    support_icon_label = Label(icons, image=support_icon, bg="Black")
+    support_icon_label = Label(icons, image=support_icon, bg=CARD_BACKGROUND)
     support_icon_label.pack(side="left", padx=10)
     support_icon_label.image = support_icon
     
-    bindClickEvent(tank_icon_label, login)
-    bindClickEvent(damage_icon_label, login)
-    bindClickEvent(support_icon_label, login)
+    bindClickEvent(allowLogin, tank_icon_label, login)
+    bindClickEvent(allowLogin, damage_icon_label, login)
+    bindClickEvent(allowLogin, support_icon_label, login)
     
-    bindClickEvent(icons, login)
+    bindClickEvent(allowLogin, icons, login)
 
 
     ####################### Rank Images ############################
@@ -93,56 +97,58 @@ def createPlayerButton(parent, login, account, index, cards_per_row):
     damage_rank_image   = fetch_image(comp_ranks['damage']['rank_icon'], 50)  if comp_ranks['damage']  else unranked_image
     support_rank_image  = fetch_image(comp_ranks["support"]['rank_icon'], 50) if comp_ranks['support'] else unranked_image
 
-    ranks = tk.Frame(player_card, bg="Black")
+    ranks = tk.Frame(player_card, bg=CARD_BACKGROUND)
     ranks.pack(pady=10)
     
-    # Place the small images side by side
-    tank_rank_label = Label(ranks, image=tank_rank_image, bg="Black")
+    tank_rank_label = Label(ranks, image=tank_rank_image, bg=CARD_BACKGROUND)
     tank_rank_label.pack(side="left", padx=10)
     tank_rank_label.image = tank_rank_image
 
-    damage_rank_label = Label(ranks, image=damage_rank_image, bg="Black")
+    damage_rank_label = Label(ranks, image=damage_rank_image, bg=CARD_BACKGROUND)
     damage_rank_label.pack(side="left", padx=10)
     damage_rank_label.image = damage_rank_image
     
-    support_rank_label = Label(ranks, image=support_rank_image, bg="Black")
+    support_rank_label = Label(ranks, image=support_rank_image, bg=CARD_BACKGROUND)
     support_rank_label.pack(side="left", padx=10)
     support_rank_label.image = support_rank_image
     
-    bindClickEvent(tank_rank_label, login)
-    bindClickEvent(damage_rank_label, login)
-    bindClickEvent(support_rank_label, login)
+    bindClickEvent(allowLogin, tank_rank_label, login)
+    bindClickEvent(allowLogin, damage_rank_label, login)
+    bindClickEvent(allowLogin, support_rank_label, login)
     
-    bindClickEvent(ranks, login)
+    bindClickEvent(allowLogin, ranks, login)
     
     ###################### Rank Tier ########################
     tank_tier     = comp_ranks['tank']['tier']    if comp_ranks['tank']    else ""
     damage_tier   = comp_ranks['damage']['tier']  if comp_ranks['damage']  else ""
     support_tier  = comp_ranks["support"]['tier'] if comp_ranks['support'] else ""    
 
-    tiers = tk.Frame(player_card, bg="Black")
+    tiers = tk.Frame(player_card, bg=CARD_BACKGROUND)
     tiers.pack(pady=10)
     
-    tank_tier_label = Label(tiers, text=tank_tier, font=("Arial", 16), bg="Black", fg="white")
+    tank_tier_label = Label(tiers, text=tank_tier, font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
     tank_tier_label.pack(side="left", padx=30)
     
-    damage_tier_label = Label(tiers, text=damage_tier, font=("Arial", 16), bg="Black", fg="white")
+    damage_tier_label = Label(tiers, text=damage_tier, font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
     damage_tier_label.pack(side="left", padx=30)
 
-    support_tier_label = Label(tiers, text=support_tier, font=("Arial", 16), bg="Black", fg="white")
+    support_tier_label = Label(tiers, text=support_tier, font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
     support_tier_label.pack(side="left", padx=30)
     
-    bindClickEvent(tank_tier_label, login)
-    bindClickEvent(damage_tier_label, login)
-    bindClickEvent(support_tier_label, login)
+    bindClickEvent(allowLogin, tank_tier_label, login)
+    bindClickEvent(allowLogin, damage_tier_label, login)
+    bindClickEvent(allowLogin, support_tier_label, login)
     
-    bindClickEvent(tiers, login)
+    bindClickEvent(allowLogin, tiers, login)
     
-def bindClickEvent(widget, login):
+#bind an object to the click event
+def bindClickEvent(allowLogin, widget, login):
+    if(not allowLogin):
+        return 
     """Bind the click event to a widget and change cursor."""
     widget.bind("<Button-1>", lambda event: launchGame.launchGame(login))
     
-
+#fetch an image from a given url and resize it
 def fetch_image(url, size):
     response = requests.get(url)
     image_data = response.content

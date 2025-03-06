@@ -12,16 +12,11 @@ def launchGame(login):
     # Wait for app to open
     time.sleep(3)
     
+    #full screen the app
     pyautogui.keyDown('win')
     pyautogui.press('up')
     pyautogui.keyUp('win')
-    
-    pyautogui.keyDown('win')
-    pyautogui.keyDown('shift')
-    pyautogui.press('right')
-    pyautogui.keyUp('win')
-    pyautogui.keyUp('shift')
-    
+
     try:
         isLoggedIn = pyautogui.locateOnScreen('images/BattleNetHome.png')
     except:
