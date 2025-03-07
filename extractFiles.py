@@ -23,5 +23,4 @@ def getJsonFile(filePath):
     with open(filePath, 'r') as file:
         data = json.load(file) 
 
-    print(data)
     return data

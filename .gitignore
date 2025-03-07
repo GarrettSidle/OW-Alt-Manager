@@ -1,3 +1,5 @@
 # Ignore logins.json
 logins.json
 friends.json
+dist/
+build/

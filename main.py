@@ -3,15 +3,11 @@ import getPlayerInfo
 import extractFiles
 import createWindow
 
-login_data = []
 
 
 logins= extractFiles.extractFiles()
-for login in logins:
-    login_data.append(getPlayerInfo.getPlayerInfo(login))
+login_data = (getPlayerInfo.getPlayersInfo(logins))
      
-
-
 createWindow.createWindow(logins, login_data)
 
 
