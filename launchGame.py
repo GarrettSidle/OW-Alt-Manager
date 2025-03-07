@@ -12,10 +12,6 @@ def launchGame(login):
     # Wait for app to open
     time.sleep(3)
     
-    #full screen the app
-    pyautogui.keyDown('win')
-    pyautogui.press('up')
-    pyautogui.keyUp('win')
 
     try:
         isLoggedIn = pyautogui.locateOnScreen('images/BattleNetHome.png')
@@ -27,13 +23,17 @@ def launchGame(login):
         for i in range(8):
             pyautogui.press('tab')
         pyautogui.press('enter')
-        time.sleep(1)
-        logout_location = pyautogui.locateOnScreen('images/LogOut.png')
-        logout_center = pyautogui.center(logout_location)
-        pyautogui.click(logout_center)
+        for i in range(11):
+            pyautogui.press('down')
+        pyautogui.press('enter')
+    time.sleep(5)
     
-    for i in range(15):
-        pyautogui.press('tab')
+    
+    
+    pyautogui.keyDown('shift')
+    pyautogui.press('tab')
+    pyautogui.keyUp('shift')
+    
         
     pyautogui.press('backspace')
 
@@ -47,8 +47,8 @@ def launchGame(login):
     for i in range(10):
         pyautogui.press('tab')
     pyautogui.press("enter")
-    time.sleep(1)
+    time.sleep(2)
+    for i in range(7):
+        pyautogui.press('tab')
+    pyautogui.press("enter")
     
-    play_location = pyautogui.locateOnScreen('images/Play.png')
-    play_center = pyautogui.center(play_location)
-    pyautogui.click(play_center)
