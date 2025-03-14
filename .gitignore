@@ -1,6 +1,6 @@
 # Ignore logins.json
 logins.json
 friends.json
-dist/
+dist/logins.json
 build/
 __pycache__/

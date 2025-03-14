@@ -17,9 +17,7 @@ def createWindow(logins, login_data):
 
     # Start in maximized mode
     root.state('zoomed')
-    
-    user_warning = Label(root, text="Make sure battlenet application opens onto your main moniter,\n and battlenet is closed when clicking an account", font=("Arial", 35))
-    user_warning.pack(pady=10)
+
 
     # Create a frame to center the player cards
     container = tk.Frame(root, bg=APP_BACKGROUND)
