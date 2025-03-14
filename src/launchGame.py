@@ -64,7 +64,7 @@ def wait_for_image(image, attemptLimit):
     while(not location):
         try:
             #attempt to find the image
-            location = pyautogui.locateCenterOnScreen(f'images/{image}.png', confidence=0.8)
+            location = pyautogui.locateCenterOnScreen(f'images/search/{image}.png', confidence=0.8)
             print(F'----------------------FOUND {image.upper()}----------------------')
             return location
         except:
@@ -101,7 +101,7 @@ def launchGame(login):
     
         #attempt to find the login screen
         try:
-            location = pyautogui.locateCenterOnScreen('images/BattleNetLoginLogo.png', confidence=0.8)
+            location = pyautogui.locateCenterOnScreen('images/search/BattleNetLoginLogo.png', confidence=0.8)
             isLoggedIn = False
             break
         except:
@@ -109,7 +109,7 @@ def launchGame(login):
             
         #attempt to find the home screen
         try:
-            location = pyautogui.locateCenterOnScreen('images/BattleNetHomeLogo.png', confidence=0.8)
+            location = pyautogui.locateCenterOnScreen('images/search/BattleNetHomeLogo.png', confidence=0.8)
             isLoggedIn = True
             break
         except:

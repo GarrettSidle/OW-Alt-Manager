@@ -1,7 +1,7 @@
 import os
 import json
 
-LOGINS_PATH  = 'logins.json'
+LOGINS_PATH  =  'logins.json'
 
 def extractFiles():
     logins  = getJsonFile(LOGINS_PATH)

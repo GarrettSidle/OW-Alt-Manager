@@ -64,9 +64,9 @@ def createPlayerButton(parent, login, account, index, cards_per_row):
     bindClickEvent(player_username, login)
     
     ####################### Role Icons ##########################
-    tank_icon =    ImageTk.PhotoImage(Image.open("images/Tank.png")   .resize((50, 50)))
-    damage_icon =  ImageTk.PhotoImage(Image.open("images/Damage.png") .resize((50, 50)))
-    support_icon = ImageTk.PhotoImage(Image.open("images/Support.png").resize((50, 50)))
+    tank_icon =    ImageTk.PhotoImage(Image.open("images/assets/Tank.png")   .resize((50, 50)))
+    damage_icon =  ImageTk.PhotoImage(Image.open("images/assets/Damage.png") .resize((50, 50)))
+    support_icon = ImageTk.PhotoImage(Image.open("images/assets/Support.png").resize((50, 50)))
 
     icons = tk.Frame(player_card, bg=CARD_BACKGROUND)
     icons.pack(pady=10)
@@ -92,7 +92,7 @@ def createPlayerButton(parent, login, account, index, cards_per_row):
 
     ####################### Rank Images ############################
     comp_ranks = account['competitive']['pc']
-    unranked_image = ImageTk.PhotoImage(Image.open("images/unranked.png").resize((50, 50)))
+    unranked_image = ImageTk.PhotoImage(Image.open("images/assets/unranked.png").resize((50, 50)))
 
     tank_rank_image     = fetch_image(comp_ranks['tank']['rank_icon'], 50)    if comp_ranks['tank']    else unranked_image
     damage_rank_image   = fetch_image(comp_ranks['damage']['rank_icon'], 50)  if comp_ranks['damage']  else unranked_image
