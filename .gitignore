@@ -3,3 +3,4 @@ logins.json
 friends.json
 dist/
 build/
+__pycache__/
