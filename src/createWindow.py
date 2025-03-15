@@ -15,8 +15,7 @@ def createWindow(logins, player_data, config):
     root = tk.Tk()
     root.title("OW-Alt-Manager")
     root.configure(bg=APP_BACKGROUND)
-    
-    root.iconbitmap("images/assets/OWAltLogo.ico")
+
 
     # Start in maximized mode
     root.state('zoomed')

@@ -1,5 +1,7 @@
 # Overwatch Alt Account Manager
 
+![Demo](images/captures/Demo.mp4)
+
 ## Description
 
 **Overwatch Alt Account Manager** is a tool designed to help players easily manage and switch between multiple Overwatch accounts. The application displays a list of saved accounts along with their current ranks, allowing users to quickly determine which accounts can queue together. When an account is selected, the application will automatically log out of Battle.net, log into the chosen account, and launch Overwatch.
