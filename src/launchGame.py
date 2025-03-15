@@ -79,7 +79,11 @@ def wait_for_image(image, attemptLimit):
             return None
         
 
-def launchGame(login):
+def launchGame(login, config):
+    PRIMARY_DELAY   = config["PrimaryDelay"]
+    SECONDARY_DELAY = config["SecondaryDelay"]
+    
+    
     # Open Battle.net app
     pyautogui.press("win")
     time.sleep(.5)
@@ -120,7 +124,7 @@ def launchGame(login):
         attemptCounter += 1
         
         #if not found in the alloted attempts, stop
-        if attemptCounter > 15:
+        if attemptCounter > PRIMARY_DELAY:
             return
     
     
@@ -132,7 +136,7 @@ def launchGame(login):
     if(isLoggedIn):
 
         #find the area beneath account
-        location = wait_for_image('BelowAccount', 10)
+        location = wait_for_image('BelowAccount', SECONDARY_DELAY)
         if(not location):
             return
         #find account button and click it
@@ -140,13 +144,13 @@ def launchGame(login):
         pyautogui.click(new_x, new_y)
     
         #logout
-        location = wait_for_image('LogOut', 10)
+        location = wait_for_image('LogOut', SECONDARY_DELAY)
         if(not location):
             return
         pyautogui.click(location)
 
         #Wait for the login screen to appear
-        location = wait_for_image('BattleNetLoginLogo', 25)
+        location = wait_for_image('BattleNetLoginLogo', PRIMARY_DELAY)
         if(not location):
             return
         
@@ -171,19 +175,19 @@ def launchGame(login):
     time.sleep(.3)
     
     #Wait for the Home screen to appear
-    location = wait_for_image('BattleNetHomeLogo', 25)
+    location = wait_for_image('BattleNetHomeLogo', PRIMARY_DELAY)
     if(not location):
         return
         
 
     #find the overwatch button
-    location = wait_for_image('OverwatchLogo', 10)
+    location = wait_for_image('OverwatchLogo', SECONDARY_DELAY)
     if(not location):
         return
     pyautogui.click(location)
     
     #find the play button
-    location = wait_for_image('Play', 10)
+    location = wait_for_image('Play', SECONDARY_DELAY)
     if(not location):
         return
     pyautogui.click(location)

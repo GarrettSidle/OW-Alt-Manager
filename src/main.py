@@ -5,9 +5,9 @@ import createWindow
 
 
 
-logins= extractFiles.extractFiles()
-player_data = (getPlayerInfo.getPlayersInfo(logins))
+logins, config = extractFiles.extractFiles()
+player_data = (getPlayerInfo.getPlayersInfo(logins, config))
      
-createWindow.createWindow(logins, player_data)
+createWindow.createWindow(logins, player_data, config)
 
 

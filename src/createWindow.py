@@ -10,7 +10,7 @@ CARD_BACKGROUND = "black"
 TEXT_COLOR = "white"
 APP_BACKGROUND = "gray"
 
-def createWindow(logins, player_data):
+def createWindow(logins, player_data, config):
     root = tk.Tk()
     root.title("Basic Tkinter Window")
     root.configure(bg=APP_BACKGROUND)
@@ -29,12 +29,12 @@ def createWindow(logins, player_data):
     cards_per_row = max(1, screen_width // card_width)
 
     for i, (login, data) in enumerate(zip(logins, player_data)):
-        createPlayerButton(container, login, data, i, cards_per_row)
+        createPlayerButton(container, login, data, i, cards_per_row, config)
         
 
     root.mainloop()
 
-def createPlayerButton(parent, login, account, index, cards_per_row):
+def createPlayerButton(parent, login, account, index, cards_per_row, config):
     if account is None:
         return
 
@@ -49,19 +49,19 @@ def createPlayerButton(parent, login, account, index, cards_per_row):
 
     player_card.grid(row=row, column=col, padx=10, pady=10, sticky="n")
 
-    bindClickEvent(player_card, login)
+    bindClickEvent(player_card, login, config)
 
     ##################### Player Avatar #######################
     player_avatar_image = fetch_image(account['avatar'], 100)  
     player_avatar_label = Label(player_card, image=player_avatar_image, bg=CARD_BACKGROUND)
     player_avatar_label.pack(pady=20)
     player_avatar_label.image = player_avatar_image
-    bindClickEvent(player_avatar_label, login)
+    bindClickEvent(player_avatar_label, login, config)
 
     ##################### Username #######################
     player_username = Label(player_card, text=account['username'], font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
     player_username.pack(pady=10)
-    bindClickEvent(player_username, login)
+    bindClickEvent(player_username, login, config)
     
     ####################### Role Icons ##########################
     tank_icon =    ImageTk.PhotoImage(Image.open("images/assets/Tank.png")   .resize((50, 50)))
@@ -83,11 +83,11 @@ def createPlayerButton(parent, login, account, index, cards_per_row):
     support_icon_label.pack(side="left", padx=10)
     support_icon_label.image = support_icon
     
-    bindClickEvent(tank_icon_label, login)
-    bindClickEvent(damage_icon_label, login)
-    bindClickEvent(support_icon_label, login)
+    bindClickEvent(tank_icon_label, login, config)
+    bindClickEvent(damage_icon_label, login, config)
+    bindClickEvent(support_icon_label, login, config)
     
-    bindClickEvent(icons, login)
+    bindClickEvent(icons, login, config)
 
 
     ####################### Rank Images ############################
@@ -113,11 +113,11 @@ def createPlayerButton(parent, login, account, index, cards_per_row):
     support_rank_label.pack(side="left", padx=10)
     support_rank_label.image = support_rank_image
     
-    bindClickEvent(tank_rank_label, login)
-    bindClickEvent(damage_rank_label, login)
-    bindClickEvent(support_rank_label, login)
+    bindClickEvent(tank_rank_label, login, config)
+    bindClickEvent(damage_rank_label, login, config)
+    bindClickEvent(support_rank_label, login, config)
     
-    bindClickEvent(ranks, login)
+    bindClickEvent(ranks, login, config)
     
     ###################### Rank Tier ########################
     tank_tier     = comp_ranks['tank']['tier']    if comp_ranks['tank']    else ""
@@ -136,16 +136,16 @@ def createPlayerButton(parent, login, account, index, cards_per_row):
     support_tier_label = Label(tiers, text=support_tier, font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
     support_tier_label.pack(side="left", padx=30)
     
-    bindClickEvent(tank_tier_label, login)
-    bindClickEvent(damage_tier_label, login)
-    bindClickEvent(support_tier_label, login)
+    bindClickEvent(tank_tier_label, login, config)
+    bindClickEvent(damage_tier_label, login, config)
+    bindClickEvent(support_tier_label, login, config)
     
-    bindClickEvent(tiers, login)
+    bindClickEvent(tiers, login, config)
     
 #bind an object to the click event
-def bindClickEvent(widget, login):
+def bindClickEvent(widget, login, config):
     """Bind the click event to a widget and change cursor."""
-    widget.bind("<Button-1>", lambda event: launchGame.launchGame(login))
+    widget.bind("<Button-1>", lambda event: launchGame.launchGame(login, config))
     
 #fetch an image from a given url and resize it
 def fetch_image(url, size):

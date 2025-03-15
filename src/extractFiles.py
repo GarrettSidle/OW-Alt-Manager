@@ -2,10 +2,12 @@ import os
 import json
 
 LOGINS_PATH  =  'logins.json'
+CONFIG_PATH  =  'config.json'
 
 def extractFiles():
     logins  = getJsonFile(LOGINS_PATH)
-    return logins
+    config  = getJsonFile(CONFIG_PATH)
+    return logins, config
 
 
 def getJsonFile(filePath):
