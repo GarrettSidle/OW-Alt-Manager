@@ -191,6 +191,8 @@ def launchGame(login, config):
     if(not location):
         return
     pyautogui.click(location)
+    
+    time.sleep(3)
 
     #close out of battle net
     windows = [win for win in gw.getWindowsWithTitle("Battle.net") if win.isActive or win.isMaximized or win.isMinimized]

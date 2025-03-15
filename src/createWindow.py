@@ -6,7 +6,8 @@ from tkinter import Label
 
 import launchGame
 
-CARD_BACKGROUND = "black"
+CARD_BACKGROUND = "Black"
+CARD_BORDER = "#ff5404"
 TEXT_COLOR = "white"
 APP_BACKGROUND = "gray"
 
@@ -14,10 +15,22 @@ def createWindow(logins, player_data, config):
     root = tk.Tk()
     root.title("OW-Alt-Manager")
     root.configure(bg=APP_BACKGROUND)
+    
+    root.iconbitmap("images/assets/OWAltLogo.ico")
 
     # Start in maximized mode
     root.state('zoomed')
+    
+    if(len(logins) <= 6):
 
+        image_path = "images/assets/OWAltLogo.png"  
+        img = Image.open(image_path)
+        img = img.resize((700  ,440))  
+        logo = ImageTk.PhotoImage(img)
+
+        logo_label = tk.Label(root, image=logo, bg=APP_BACKGROUND)
+        logo_label.image = logo  
+        logo_label.pack(pady=(20, 10)) 
 
     # Create a frame to center the player cards
     container = tk.Frame(root, bg=APP_BACKGROUND)
@@ -38,8 +51,19 @@ def createPlayerButton(parent, login, account, index, cards_per_row, config):
     if account is None:
         return
 
-    player_card = tk.Frame(parent, width=300, height=500, bg=CARD_BACKGROUND, cursor="hand2")
+    player_card = tk.Frame(
+        parent, 
+        width=300, 
+        height=500, 
+        bg=CARD_BACKGROUND, 
+        cursor="hand2",
+        highlightbackground=CARD_BORDER, 
+        highlightthickness=4  
+    )
+    
     player_card.pack_propagate(False)
+    
+
 
     row = index // cards_per_row
     col = index % cards_per_row
@@ -50,6 +74,7 @@ def createPlayerButton(parent, login, account, index, cards_per_row, config):
     player_card.grid(row=row, column=col, padx=10, pady=10, sticky="n")
 
     bindClickEvent(player_card, login, config)
+    
 
     ##################### Player Avatar #######################
     player_avatar_image = fetch_image(account['avatar'], 100)  
@@ -59,7 +84,7 @@ def createPlayerButton(parent, login, account, index, cards_per_row, config):
     bindClickEvent(player_avatar_label, login, config)
 
     ##################### Username #######################
-    player_username = Label(player_card, text=account['username'], font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
+    player_username = Label(player_card, text=account['username'], font=("Arial", 16, "bold"), fg=TEXT_COLOR, bg=player_card.cget("bg"))
     player_username.pack(pady=10)
     bindClickEvent(player_username, login, config)
     
@@ -127,13 +152,13 @@ def createPlayerButton(parent, login, account, index, cards_per_row, config):
     tiers = tk.Frame(player_card, bg=CARD_BACKGROUND)
     tiers.pack(pady=10)
     
-    tank_tier_label = Label(tiers, text=tank_tier, font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
+    tank_tier_label = Label(tiers, text=tank_tier, font=("Arial", 16, "bold"), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
     tank_tier_label.pack(side="left", padx=30)
     
-    damage_tier_label = Label(tiers, text=damage_tier, font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
+    damage_tier_label = Label(tiers, text=damage_tier, font=("Arial", 16, "bold"), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
     damage_tier_label.pack(side="left", padx=30)
 
-    support_tier_label = Label(tiers, text=support_tier, font=("Arial", 16), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
+    support_tier_label = Label(tiers, text=support_tier, font=("Arial", 16, "bold"), bg=CARD_BACKGROUND, fg=TEXT_COLOR)
     support_tier_label.pack(side="left", padx=30)
     
     bindClickEvent(tank_tier_label, login, config)
