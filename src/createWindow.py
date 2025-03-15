@@ -12,7 +12,7 @@ APP_BACKGROUND = "gray"
 
 def createWindow(logins, player_data, config):
     root = tk.Tk()
-    root.title("Basic Tkinter Window")
+    root.title("OW-Alt-Manager")
     root.configure(bg=APP_BACKGROUND)
 
     # Start in maximized mode
