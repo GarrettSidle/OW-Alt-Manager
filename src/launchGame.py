@@ -32,6 +32,34 @@ def move_to_main_monitor():
     
     #bring it to the front
     hwnd = battlenet_window._hWnd 
+    print(hwnd)
+    
+    # Check if Battle.net is already the focused window
+    if hwnd == win32gui.GetForegroundWindow():
+        print("Battle.net is already focused.")
+        print(hwnd)
+        
+        # Get current window position
+        rect = win32gui.GetWindowRect(hwnd)
+        win_x, win_y, win_right, win_bottom = rect
+        win_width = win_right - win_x
+        win_height = win_bottom - win_y
+
+        # Get primary monitor dimensions
+        monitor_info = win32api.GetMonitorInfo(win32api.MonitorFromPoint((0, 0)))
+        left, top, right, bottom = monitor_info["Monitor"]
+        screen_width = right - left
+        screen_height = bottom - top
+
+        # Check if the window is already centered on the main monitor
+        expected_x = left + (screen_width - win_width) // 2
+        expected_y = top + (screen_height - win_height) // 2
+
+        if abs(win_x - expected_x) < 400 and abs(win_y - expected_y) < 400:  # Allow small margin of error
+            print("Battle.net is already on the main monitor.")
+            return  # No need to move it
+    
+    
     win32gui.SetForegroundWindow(hwnd)
     win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
     
@@ -78,11 +106,42 @@ def wait_for_image(image, attemptLimit):
         if attemptCounter > attemptLimit:
             return None
         
+def attemptFind(image):
+    location = None
+    try:
+        location = pyautogui.locateCenterOnScreen(f'images/search/{image}.png', confidence=0.8)
+        print(f"Found {image}")
+    except:
+        print(f"Cannot Find {image}")
+    return location
+
+
+def closeBattleNet():
+    # Close out of Battle.net or Battle.net Login
+    valid_titles = ["Battle.net", "Battle.net Login"]
+    
+    # Find all matching windows
+    windows = [win for win in gw.getAllWindows() if win.title in valid_titles]
+    
+    if not windows:
+        print("No Battle.net window found.")
+        return
+    
+    # Close the first found window
+    win32gui.PostMessage(windows[0]._hWnd, win32con.WM_CLOSE, 0, 0)
+    print(f"{windows[0].title} window closed.")
+    
+        
 
 def launchGame(login, config):
     PRIMARY_DELAY   = config["PrimaryDelay"]
     SECONDARY_DELAY = config["SecondaryDelay"]
     
+    closeBattleNet()
+    
+    if win32api.GetKeyState(win32con.VK_CAPITAL):  # If Caps Lock is ON
+        pyautogui.press('capslock')  # Toggle it OFF
+        print("Caps Lock was ON. Turning it OFF.")
     
     # Open Battle.net app
     pyautogui.press("win")
@@ -99,26 +158,10 @@ def launchGame(login, config):
     
     location = None
     attemptCounter = 0
-    while(not location):
-        
-        move_to_main_monitor()
+    wasLoading = False
     
-        #attempt to find the login screen
-        try:
-            location = pyautogui.locateCenterOnScreen('images/search/BattleNetLoginLogo.png', confidence=0.8)
-            isLoggedIn = False
-            break
-        except:
-            print("Cannot Find Login Screen")
-            
-        #attempt to find the home screen
-        try:
-            location = pyautogui.locateCenterOnScreen('images/search/BattleNetHomeLogo.png', confidence=0.8)
-            isLoggedIn = True
-            break
-        except:
-            print("Cannot Find Home Screen")
-            
+    move_to_main_monitor()
+    while(not location):
         #slowly back off to reduce overhead
         time.sleep(attemptCounter * .1)
         attemptCounter += 1
@@ -126,6 +169,21 @@ def launchGame(login, config):
         #if not found in the alloted attempts, stop
         if attemptCounter > PRIMARY_DELAY:
             return
+           
+        if(attemptFind("BattleNetLoginLogo")):
+            wasLoading = True
+            if(attemptFind("BattleNetLoginButton")):
+                isLoggedIn = False
+                break
+        elif(wasLoading):
+            if(attemptFind("BattleNetHomeLogo")):
+                isLoggedIn = True
+                break
+            else:
+                move_to_main_monitor()
+        elif(attemptFind("BattleNetHomeLogo")):
+            isLoggedIn = True
+            break
     
     
     prefix = "" if isLoggedIn else "NOT "
@@ -154,6 +212,8 @@ def launchGame(login, config):
         if(not location):
             return
         
+        time.sleep(.5)
+        
     
     #tab to the email feild
     pyautogui.hotkey('shift', 'tab')
@@ -168,6 +228,7 @@ def launchGame(login, config):
     pyautogui.press("tab")
 
     pyautogui.write(login['password'])
+    time.sleep(.1)
     pyautogui.press("enter")
     
     time.sleep(5)
@@ -190,12 +251,10 @@ def launchGame(login, config):
     location = wait_for_image('Play', SECONDARY_DELAY)
     if(not location):
         return
-    pyautogui.click(location)
+    #pyautogui.click(location)
     
     time.sleep(3)
 
-    #close out of battle net
-    windows = [win for win in gw.getWindowsWithTitle("Battle.net") if win.isActive or win.isMaximized or win.isMinimized]
-    win32gui.PostMessage(windows[0]._hWnd, win32con.WM_CLOSE, 0, 0)
-    print("Battle.net window closed.")
+    closeBattleNet()
+    
     
