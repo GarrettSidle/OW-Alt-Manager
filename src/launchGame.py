@@ -213,7 +213,7 @@ def launchGame(login, config):
             return
         
         time.sleep(.5)
-        
+    time.sleep(.5)
     
     #tab to the email feild
     pyautogui.hotkey('shift', 'tab')
@@ -251,7 +251,7 @@ def launchGame(login, config):
     location = wait_for_image('Play', SECONDARY_DELAY)
     if(not location):
         return
-    #pyautogui.click(location)
+    pyautogui.click(location)
     
     time.sleep(3)
 
