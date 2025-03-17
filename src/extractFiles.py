@@ -30,27 +30,27 @@ def getJsonFile(filePath):
 
 default_data = [
     {
-        "username": "Flats-11344",
+        "username": "Flats#11344",
         "password": "Put Email Here",
         "email": "Put Password Here"
     },
     {
-        "username": "emongg-11183",
+        "username": "emongg#11183",
         "password": "Put Email Here",
         "email": "Put Password Here"
     },   
     {
-        "username": "super-12850",
+        "username": "super#12850",
         "password": "Put Email Here",
         "email": "Put Password Here"
     },  
     {
-        "username": "Jay3-11894",
+        "username": "Jay3#11894",
         "password": "Put Email Here",
         "email": "Put Password Here"
     },  
     {
-        "username": "mL7-21877",
+        "username": "mL7#21877",
         "password": "Put Email Here",
         "email": "Put Password Here"
     }

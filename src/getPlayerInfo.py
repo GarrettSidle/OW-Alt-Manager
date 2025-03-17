@@ -7,6 +7,10 @@ import time
 def getPlayersInfo(login, config):
     thread_limit = config["ThreadLimit"]
     
+    for player in login:
+        player["username"] = player["username"].replace("#", "-")
+        
+    
     #create a thread for every coming API call
     with ThreadPoolExecutor(max_workers=thread_limit) as executor:
         results = executor.map(partial(getPlayerInfo, timer=1), login)
