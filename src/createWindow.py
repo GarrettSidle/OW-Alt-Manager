@@ -37,7 +37,7 @@ def createWindow(logins, player_data, config):
 
     # Get screen width and calculate how many cards fit per row
     screen_width = root.winfo_screenwidth()
-    card_width = 320  # Card width + padding
+    card_width = 290  # Card width + padding
     cards_per_row = max(1, screen_width // card_width)
 
     for i, (login, data) in enumerate(zip(logins, player_data)):
@@ -52,7 +52,7 @@ def createPlayerButton(parent, login, account, index, cards_per_row, config):
 
     player_card = tk.Frame(
         parent, 
-        width=300, 
+        width=290, 
         height=500, 
         bg=CARD_BACKGROUND, 
         cursor="hand2",
