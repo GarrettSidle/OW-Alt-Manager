@@ -38,7 +38,7 @@
 ## Executable Build
 
 Build the project using :
-`pyinstaller --onefile  --icon=images/assets/OWAltLogo.ico  src/main.py`
+`pyinstaller --onefile --icon=images/assets/OWAltLogo.ico --name "OW Alt Manager" src/main.py`
 
 ## Security Notice
 
